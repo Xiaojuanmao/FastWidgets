@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">fastwidget</string>
+    <string name="add_widget">添加 WIDGET</string>
+    <string name="more_widget">更多 WIDGET</string>
 </resources>
