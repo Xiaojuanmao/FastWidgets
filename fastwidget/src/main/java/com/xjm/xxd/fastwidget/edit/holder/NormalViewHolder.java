@@ -9,23 +9,17 @@ import com.xjm.xxd.fastwidget.R;
 import com.xjm.xxd.fastwidget.edit.adapter.EditWidgetItemCallback;
 import com.xjm.xxd.fastwidget.widget.WidgetConfig;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by queda on 2016/12/5.
  */
 
-public class NormalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class NormalViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.edit_widget_normal_action)
-    ImageView mAction;
-    @BindView(R.id.edit_widget_normal_icon)
-    ImageView mIcon;
-    @BindView(R.id.edit_widget_normal_name)
-    TextView mName;
-    @BindView(R.id.edit_widget_normal_drag)
-    ImageView mDrag;
+    private ImageView mAction;
+    private ImageView mIcon;
+    private TextView mName;
+    private ImageView mDrag;
 
     private boolean mIsAdded = false; // 用来标记当前的holder是否是add的状态
     private WidgetConfig mWidgetConfig;
@@ -34,8 +28,22 @@ public class NormalViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public NormalViewHolder(View itemView, EditWidgetItemCallback callback) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
-        mAction.setOnClickListener(this);
+        mAction = (ImageView) itemView.findViewById(R.id.edit_widget_normal_action);
+        mIcon = (ImageView) itemView.findViewById(R.id.edit_widget_normal_icon);
+        mName = (TextView) itemView.findViewById(R.id.edit_widget_normal_name);
+        mDrag = (ImageView) itemView.findViewById(R.id.edit_widget_normal_drag);
+        mAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCallback != null) {
+                    if (mIsAdded) {
+                        mCallback.onRemoveClicked(mWidgetConfig);
+                    } else {
+                        mCallback.onAddClicked(mWidgetConfig);
+                    }
+                }
+            }
+        });
         mCallback = callback;
     }
 
@@ -52,21 +60,6 @@ public class NormalViewHolder extends RecyclerView.ViewHolder implements View.On
         if (mWidgetConfig != null) {
             mIcon.setImageResource(mWidgetConfig.getWidgetIconId());
             mName.setText(mWidgetConfig.getWidgetName());
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.edit_widget_normal_action:
-                if (mCallback != null) {
-                    if (mIsAdded) {
-                        mCallback.onRemoveClicked(mWidgetConfig);
-                    } else {
-                        mCallback.onAddClicked(mWidgetConfig);
-                    }
-                }
-                break;
         }
     }
 

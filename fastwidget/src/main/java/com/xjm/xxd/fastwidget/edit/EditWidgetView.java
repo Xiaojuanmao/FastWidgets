@@ -25,20 +25,14 @@ import com.xjm.xxd.fastwidget.widget.WidgetConfig;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 /**
  * Created by queda on 2016/12/2.
  */
 
 public class EditWidgetView extends RelativeLayout implements IEditView {
 
-    @BindView(R.id.tool_bar_ensure)
-    ImageView mEnsure;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    private ImageView mEnsure;
+    private RecyclerView mRecyclerView;
 
     private boolean mIsAnimating = false;
 
@@ -63,11 +57,18 @@ public class EditWidgetView extends RelativeLayout implements IEditView {
 
     private void initViews(Context context) {
         View view = inflate(context, R.layout.layout_edit_widget_view, this);
-        ButterKnife.bind(this, view);
-
+        mEnsure = (ImageView) view.findViewById(R.id.tool_bar_ensure);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mManager = new EditWidgetManager(new WeakReference<>(getContext()));
         mManager.bindView(this);
+
+        mEnsure.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hide();
+            }
+        });
     }
 
     @Override
@@ -192,15 +193,6 @@ public class EditWidgetView extends RelativeLayout implements IEditView {
                     mManager.onDestroy();
                 }
             }
-        }
-    }
-
-    @OnClick(R.id.tool_bar_ensure)
-    void onViewClicked(View v) {
-        switch (v.getId()) {
-            case R.id.tool_bar_ensure:
-                hide();
-                break;
         }
     }
 

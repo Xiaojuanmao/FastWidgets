@@ -1,11 +1,10 @@
-package com.xjm.xxd.fastwidget;
+package com.xjm.xxd.fastwidgets;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.TextClock;
 
 import com.xjm.xxd.fastwidget.widget.BaseWidget;
 import com.xjm.xxd.fastwidget.widget.WidgetConfig;
@@ -16,24 +15,25 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 
 /**
- * Created by queda on 2016/12/5.
+ * Created by queda on 2016/12/2.
  */
 
-public class NewsWidget extends BaseWidget {
+public class TimeWidget extends BaseWidget {
 
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.image)
-    ImageView mImage;
+    @BindView(R.id.text_clock)
+    TextClock mTextClock;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
 
-    public static final String WIDGET_NAME = "新闻插件";
-    public static final int WIDGET_ICON_ID = R.drawable.ic_widget_news;
+    public static final String WIDGET_NAME = "时钟插件";
+    public static final int WIDGET_ICON_ID = R.drawable.ic_widget_time;
 
     @Override
     protected View createView(LayoutInflater layoutInflater) {
-        View view = layoutInflater.inflate(R.layout.layout_news_widget, null);
+        if (layoutInflater == null) {
+            return null;
+        }
+        View view = layoutInflater.inflate(R.layout.layout_time_widget, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -41,20 +41,14 @@ public class NewsWidget extends BaseWidget {
     @Override
     public void onResume() {
         super.onResume();
-
         mProgressBar.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mProgressBar.setVisibility(GONE);
-                mTitle.setText("News Title");
-                mTitle.setVisibility(View.VISIBLE);
-                mImage.setVisibility(View.VISIBLE);
-                mImage.setImageResource(R.drawable.img_news_widget);
+                mTextClock.setVisibility(View.VISIBLE);
             }
-        }, 2000);
+        }, 3000);
     }
-
-
 
     @Override
     protected void perfectConfigInfo(@NonNull WidgetConfig config) {

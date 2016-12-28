@@ -1,4 +1,4 @@
-package com.xjm.xxd.fastwidget;
+package com.xjm.xxd.fastwidgets;
 
 import android.view.LayoutInflater;
 
