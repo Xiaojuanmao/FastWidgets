@@ -9,6 +9,7 @@ import com.xjm.xxd.fastwidget.R;
 import com.xjm.xxd.fastwidget.edit.holder.GroupViewHolder;
 import com.xjm.xxd.fastwidget.edit.holder.HeaderViewHolder;
 import com.xjm.xxd.fastwidget.edit.holder.NormalViewHolder;
+import com.xjm.xxd.fastwidget.widget.IWidgetFactory;
 import com.xjm.xxd.fastwidget.widget.WidgetConfig;
 
 import java.util.Collections;
@@ -24,7 +25,7 @@ import rx.schedulers.Schedulers;
  * Created by queda on 2016/12/5.
  */
 
-public abstract class EditWidgetBaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements EditWidgetItemCallback {
+public class EditWidgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements EditWidgetItemCallback {
 
     private static final int ITEM_TYPE_HEADER = 0; // 头部
     private static final int ITEM_TYPE_ADDED_TITLE = 1; // 已经被添加的组件头部
@@ -32,6 +33,7 @@ public abstract class EditWidgetBaseAdapter extends RecyclerView.Adapter<Recycle
     private static final int ITEM_TYPE_NOT_ADD_TITLE = 3; // 没有被添加的组件头部
     private static final int ITEM_TYPE_NOT_ADD = 4; // 没有被添加的组件
 
+    private IWidgetFactory mFactory;
     private LayoutInflater mInflater;
     private EditWidgetItemCallback mItemCallback; // 用来反馈item点击事件
 
@@ -39,15 +41,14 @@ public abstract class EditWidgetBaseAdapter extends RecyclerView.Adapter<Recycle
     private List<WidgetConfig> mNotShownWidgetConfig = new LinkedList<>(); // 处于关闭状态的列表
     protected List<WidgetConfig> mAllWidgetConfig = new LinkedList<>(); // 全部组件的列表
 
-    private static final String TAG = EditWidgetBaseAdapter.class.getSimpleName();
+    private static final String TAG = EditWidgetAdapter.class.getSimpleName();
 
-    private EditWidgetBaseAdapter() {
+    private EditWidgetAdapter() {
 
     }
 
-    public EditWidgetBaseAdapter(LayoutInflater inflater) {
+    public EditWidgetAdapter(LayoutInflater inflater) {
         mInflater = inflater;
-        initAllWidgetConfigs();
     }
 
     @Override
@@ -236,6 +237,12 @@ public abstract class EditWidgetBaseAdapter extends RecyclerView.Adapter<Recycle
         mItemCallback = callback;
     }
 
+    public void setWidgetFactory(IWidgetFactory factory) {
+        mFactory = factory;
+        List<WidgetConfig> allConfigs = mFactory.getAllWidgetConfigs();
+        mAllWidgetConfig.addAll(allConfigs);
+    }
+
     public void bindShownWidgetConfigs(List<WidgetConfig> shownConfigs) {
 
         // TODO : 存在等待的情況，可能需要用進度條提示用戶
@@ -272,10 +279,5 @@ public abstract class EditWidgetBaseAdapter extends RecyclerView.Adapter<Recycle
                     }
                 });
     }
-
-    /**
-     * 用来初始化全量的widget信息列表
-     */
-    protected abstract void initAllWidgetConfigs();
 
 }

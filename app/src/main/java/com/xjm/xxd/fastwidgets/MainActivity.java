@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.xjm.xxd.fastwidget.container.WidgetGroupContainer;
 import com.xjm.xxd.fastwidget.edit.EditWidgetView;
+import com.xjm.xxd.fastwidget.edit.adapter.EditWidgetAdapter;
+import com.xjm.xxd.fastwidget.widget.IWidgetFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.edit_view)
     EditWidgetView mEditView;
 
+    private IWidgetFactory mFactory;
+    private EditWidgetAdapter mAdapter;
+
     private static final int MENU_ID_MANAGE = 0;
 
     @Override
@@ -29,8 +34,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mEditView.setAdapter(new EditWidgetAdapter(LayoutInflater.from(this)));
+        mFactory = new SimpleWidgetFactory();
+        mContainer.setWidgetFactory(mFactory);
+
+        mAdapter = new EditWidgetAdapter(LayoutInflater.from(this));
+        mAdapter.setWidgetFactory(mFactory);
+
+        mEditView.setAdapter(mAdapter);
         mEditView.bindContainerEditor(mContainer.edit());
+
     }
 
     @Override

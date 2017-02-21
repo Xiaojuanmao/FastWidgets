@@ -1,11 +1,11 @@
 package com.xjm.xxd.fastwidget.container;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.xjm.xxd.fastwidget.widget.BaseWidget;
+import com.xjm.xxd.fastwidget.widget.IWidgetFactory;
 import com.xjm.xxd.fastwidget.widget.WidgetConfig;
 
 import java.lang.ref.WeakReference;
@@ -21,9 +21,9 @@ import java.util.Map;
 
 public class WidgetGroupManager implements IGroupManager {
 
-    private IGroupContainer mContainer;
-
     private IGroupConfig mConfig;
+    private IWidgetFactory mFactory; // to generate widget according to config
+    private IGroupContainer mContainer;
 
     private List<BaseWidget> mLinkedWidgets; // 存放着当前widget的顺序
     private Map<BaseWidget, View> mWidgetViewMap; // 管理widget和view对应的关系
@@ -60,23 +60,10 @@ public class WidgetGroupManager implements IGroupManager {
      * @return
      */
     private BaseWidget generateBaseWidget(WidgetConfig config) {
-        if (config == null) {
+        if (config == null || mFactory == null) {
             return null;
         }
-        String widgetClassName = config.getWidgetClassName();
-        if (!TextUtils.isEmpty(widgetClassName)) {
-            try {
-                Class clazz = Class.forName(widgetClassName);
-                Object widgetObj = clazz.newInstance();
-                if (widgetObj instanceof BaseWidget) {
-                    Log.e(TAG, "initWithConfig(), find widgetObj : " + widgetClassName + " use reflect");
-                    return ((BaseWidget) widgetObj);
-                }
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+        return mFactory.generateWidget(config);
     }
 
     @Override
@@ -192,6 +179,11 @@ public class WidgetGroupManager implements IGroupManager {
         if (mConfig != null) {
             mConfig.save();
         }
+    }
+
+    @Override
+    public void setWidgetFactory(IWidgetFactory factory) {
+        mFactory = factory;
     }
 
 }

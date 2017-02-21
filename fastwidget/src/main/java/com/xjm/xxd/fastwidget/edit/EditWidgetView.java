@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import com.xjm.xxd.fastwidget.R;
 import com.xjm.xxd.fastwidget.container.IContainerEditor;
 import com.xjm.xxd.fastwidget.edit.adapter.EditItemTouchHelperCallback;
-import com.xjm.xxd.fastwidget.edit.adapter.EditWidgetBaseAdapter;
+import com.xjm.xxd.fastwidget.edit.adapter.EditWidgetAdapter;
 import com.xjm.xxd.fastwidget.edit.adapter.OnRecyclerItemClickListener;
 import com.xjm.xxd.fastwidget.edit.holder.NormalViewHolder;
 import com.xjm.xxd.fastwidget.widget.WidgetConfig;
@@ -38,7 +38,7 @@ public class EditWidgetView extends RelativeLayout implements IEditView {
 
     private IEditManager mManager;
 
-    private EditWidgetBaseAdapter mAdapter;
+    private EditWidgetAdapter mAdapter;
     private EditItemTouchHelperCallback mTouchCallback;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -86,7 +86,7 @@ public class EditWidgetView extends RelativeLayout implements IEditView {
      * 设置adapter
      * @param adapter
      */
-    public void setAdapter(EditWidgetBaseAdapter adapter) {
+    public void setAdapter(EditWidgetAdapter adapter) {
         if (adapter != null) {
             mAdapter = adapter;
             mAdapter.setEditWidgetItemCallback(mManager);

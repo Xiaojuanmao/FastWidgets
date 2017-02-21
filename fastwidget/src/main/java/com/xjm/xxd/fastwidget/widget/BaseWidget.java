@@ -14,11 +14,11 @@ import java.lang.ref.WeakReference;
 
 public abstract class BaseWidget implements IWidget {
 
-    protected View mRootView;
+    private View mRootView;
 
-    protected WeakReference<Context> mContextReference;
+    private WeakReference<Context> mContextReference;
 
-    protected WidgetConfig mConfig;
+    private WidgetConfig mConfig;
 
     @Override
     public View onCreate(WeakReference<Context> contextWeakReference) {

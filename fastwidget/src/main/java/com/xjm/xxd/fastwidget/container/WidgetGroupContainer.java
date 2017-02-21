@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.xjm.xxd.fastwidget.widget.IWidgetFactory;
+
 /**
  * 作为所有组件的父容器
  * 管理所有组件的生命周期
@@ -45,18 +47,6 @@ public class WidgetGroupContainer extends ScrollView
             mRootContainer.setOrientation(LinearLayout.VERTICAL);
         }
         addView(mRootContainer);
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mManager = new WidgetGroupManager(getContext());
-        mManager.bindContainer(this);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
     }
 
     @Override
@@ -95,6 +85,12 @@ public class WidgetGroupContainer extends ScrollView
 
     public IContainerEditor edit() {
         return mManager;
+    }
+
+    public void setWidgetFactory(IWidgetFactory factory) {
+        mManager = new WidgetGroupManager(getContext());
+        mManager.setWidgetFactory(factory);
+        mManager.bindContainer(this);
     }
 
 }
