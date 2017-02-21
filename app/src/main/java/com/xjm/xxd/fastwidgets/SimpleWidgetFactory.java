@@ -1,8 +1,5 @@
 package com.xjm.xxd.fastwidgets;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.xjm.xxd.fastwidget.widget.BaseWidget;
 import com.xjm.xxd.fastwidget.widget.IWidgetFactory;
 import com.xjm.xxd.fastwidget.widget.WidgetConfig;
@@ -30,21 +27,21 @@ public class SimpleWidgetFactory implements IWidgetFactory {
 
     @Override
     public BaseWidget generateWidget(WidgetConfig config) {
+        BaseWidget baseWidget = null;
+        switch (config.getWidgetName()) {
+            case NewsWidget.WIDGET_NAME:
+                baseWidget = new NewsWidget();
+                break;
 
-        String widgetClassName = config.getWidgetClassName();
-        if (!TextUtils.isEmpty(widgetClassName)) {
-            try {
-                Class clazz = Class.forName(widgetClassName);
-                Object widgetObj = clazz.newInstance();
-                if (widgetObj instanceof BaseWidget) {
-                    Log.e(TAG, "generateWidget(), find widgetObj : " + widgetClassName + " use reflect");
-                    return ((BaseWidget) widgetObj);
-                }
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
-            }
+            case WeatherWidget.WIDGET_NAME:
+                baseWidget = new WeatherWidget();
+                break;
+
+            case TimeWidget.WIDGET_NAME:
+                baseWidget = new TimeWidget();
+                break;
         }
-        return null;
+        return baseWidget;
     }
 
 }
